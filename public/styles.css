@@ -650,6 +650,21 @@ body.modal-open {
   background: #fff;
 }
 
+.footer-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-info a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-info a:hover {
+  text-decoration: underline;
+}
+
 .admin-body {
   background: #f4f6fa;
 }

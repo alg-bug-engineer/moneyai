@@ -438,7 +438,10 @@ function renderHeader(siteName, pathname) {
 function renderFooter(siteName) {
   return `
     <footer class="site-footer">
-      <span>© ${new Date().getFullYear()} ${escapeHtml(siteName)}</span>
+      <div class="footer-info">
+        <span>© ${new Date().getFullYear()} ${escapeHtml(siteName)}</span>
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">冀ICP备2026011782号</a>
+      </div>
       <nav class="footer-nav" aria-label="页脚导航">
         <a href="/">首页</a>
         <a href="/products">商品页</a>
