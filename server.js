@@ -1039,7 +1039,7 @@ function renderProductPage(req, store, product) {
               <a class="primary-button checkout-button" href="/api/pay?slug=${encodeURIComponent(product.slug)}" 
                  onclick="this.classList.add('loading'); this.innerHTML='<span class=\'spinner\'></span> 正在生成订单...';"
                  style="background: linear-gradient(135deg, #1677ff 0%, #0050b3 100%); color: white; border: none; padding: 1.25rem; font-size: 1.4rem; font-weight: bold; text-align: center; border-radius: 16px; box-shadow: 0 8px 24px rgba(22, 119, 255, 0.4); transition: transform 0.2s, box-shadow 0.2s; display: flex; align-items: center; justify-content: center;">
-                立即扫码支付 (￥${product.price.toFixed(2)})
+                立即订购全部 (￥${product.price.toFixed(2)})
               </a>
               <div style="display: flex; gap: 0.75rem;">
                 <a class="ghost-button" href="/contact" style="flex: 1; text-align: center; padding: 0.8rem; border-radius: 12px;">咨询客服</a>
@@ -1077,11 +1077,18 @@ function renderProductPage(req, store, product) {
         <div class="product-option-grid">
           ${(product.options || [])
             .map(
-              (option) => `
-                <article class="option-card">
-                  <h3>${escapeHtml(option.label)}</h3>
-                  <strong>${formatPrice(option.price || product.price)}</strong>
-                  <p>${escapeHtml(text(option.note, "联系客服确认具体适用条件。"))}</p>
+              (option, index) => `
+                <article class="option-card" style="display: flex; flex-direction: column; justify-content: space-between; border: 2px solid var(--line); transition: border-color 0.2s, transform 0.2s; cursor: pointer;" onmouseover="this.style.borderColor='#1677ff'; this.style.transform='translateY(-4px)';" onmouseout="this.style.borderColor='var(--line)'; this.style.transform='translateY(0)';">
+                  <div>
+                    <h3 style="margin-bottom: 0.5rem; color: var(--ink);">${escapeHtml(option.label)}</h3>
+                    <div style="font-size: 1.75rem; font-weight: 800; color: #1677ff; margin-bottom: 0.5rem;">${formatPrice(option.price || product.price)}</div>
+                    <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; min-height: 2.5rem;">${escapeHtml(text(option.note, "为您提供最稳定的代充方案。"))}</p>
+                  </div>
+                  <a class="primary-button" href="/api/pay?slug=${encodeURIComponent(product.slug)}&optionIndex=${index}"
+                     onclick="this.innerText='处理中...'; event.stopPropagation();"
+                     style="background: #1677ff; color: white; border: none; padding: 0.85rem; border-radius: 10px; text-align: center; font-weight: bold; width: 100%; box-shadow: 0 4px 10px rgba(22, 119, 255, 0.2);">
+                    立即订购
+                  </a>
                 </article>
               `
             )
@@ -1319,17 +1326,29 @@ async function handleApi(req, res, pathname) {
     if (req.method === "GET" && pathname === "/api/pay") {
       const url = new URL(req.url, `http://${req.headers.host}`);
       const slug = url.searchParams.get("slug");
+      const optionIndex = url.searchParams.get("optionIndex");
+      
       const store = readStore();
       const product = store.products.find((item) => item.slug === slug && item.published);
       if (!product) return sendError(res, 404, "商品不存在");
+
+      let totalAmount = product.price.toFixed(2);
+      let subject = product.name;
+
+      // If a specific option is selected, use its price and include its label in the subject
+      if (optionIndex !== null && product.options && product.options[optionIndex]) {
+        const option = product.options[optionIndex];
+        totalAmount = (option.price || product.price).toFixed(2);
+        subject = `${product.name} - ${option.label}`;
+      }
 
       try {
         const result = await alipaySdk.pageExec("alipay.trade.page.pay", {
           bizContent: {
             out_trade_no: `order_${Date.now()}_${product.slug}`,
             product_code: "FAST_INSTANT_TRADE_PAY",
-            total_amount: product.price.toFixed(2),
-            subject: product.name
+            total_amount: totalAmount,
+            subject: subject
           },
           returnUrl: absoluteUrl(req, "/contact")
         });

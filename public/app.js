@@ -142,6 +142,8 @@ async function init() {
     // Handle modal pay button update
     const modal = document.querySelector("#productModal");
     const modalPayBtn = document.querySelector("#modalPayBtn");
+    const modalOptions = document.querySelector("#modalOptions");
+
     if (modalPayBtn) {
       document.addEventListener("click", (e) => {
         const card = e.target.closest(".product-card");
@@ -149,8 +151,40 @@ async function init() {
           const href = card.querySelector("a.product-main")?.getAttribute("href");
           if (href) {
             const slug = decodeURIComponent(href.split("/").pop());
-            modalPayBtn.href = `/api/pay?slug=${slug}`;
-            modalPayBtn.innerText = "立即扫码支付";
+            const product = state.products.find(p => p.slug === slug);
+            
+            if (product) {
+              modalPayBtn.href = `/api/pay?slug=${slug}`;
+              modalPayBtn.innerText = `立即购买全套 (￥${product.price.toFixed(2)})`;
+
+              // Render options in modal
+              if (modalOptions) {
+                if (product.options && product.options.length > 0) {
+                  modalOptions.innerHTML = `
+                    <h3 style="margin: 2rem 0 1rem; font-size: 1.25rem; font-weight: bold; border-left: 4px solid #1677ff; padding-left: 0.75rem;">选择套餐方案</h3>
+                    <div style="display: grid; gap: 1rem;">
+                      ${product.options.map((opt, idx) => `
+                        <div style="border: 2px solid var(--line); border-radius: 12px; padding: 1.25rem; display: flex; justify-content: space-between; align-items: center; background: #fff; transition: all 0.2s; cursor: pointer;"
+                             onclick="window.location.href='/api/pay?slug=${product.slug}&optionIndex=${idx}'; this.style.borderColor='#1677ff';"
+                             onmouseover="this.style.borderColor='#1677ff'; this.style.background='#f0f7ff';"
+                             onmouseout="this.style.borderColor='var(--line)'; this.style.background='#fff';">
+                          <div style="flex: 1;">
+                            <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 0.25rem;">${escapeHtml(opt.label)}</div>
+                            <div style="font-size: 0.85rem; color: var(--muted);">${escapeHtml(opt.note || "专业代充服务")}</div>
+                          </div>
+                          <div style="text-align: right; margin-left: 1.5rem;">
+                            <div style="font-weight: 900; color: #1677ff; font-size: 1.25rem; margin-bottom: 0.5rem;">￥${(opt.price || product.price).toFixed(2)}</div>
+                            <span style="background: #1677ff; color: white; padding: 6px 16px; border-radius: 6px; font-size: 0.9rem; font-weight: bold; display: inline-block;">立即订购</span>
+                          </div>
+                        </div>
+                      `).join("")}
+                    </div>
+                  `;
+                } else {
+                  modalOptions.innerHTML = "";
+                }
+              }
+            }
           }
         }
       });
