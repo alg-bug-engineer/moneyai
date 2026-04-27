@@ -1,0 +1,10 @@
+<svg width="900" height="506" viewBox="0 0 900 506" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="506" rx="24" fill="#F5F0E5"/>
+  <path d="M0 365C140 286 259 298 383 365C547 454 704 455 900 360V506H0V365Z" fill="#C89B3C" fill-opacity=".42"/>
+  <rect x="100" y="86" width="300" height="300" rx="24" fill="#252832"/>
+  <circle cx="252" cy="236" r="92" fill="#EC4F4F"/>
+  <path d="M470 132H735" stroke="#252832" stroke-width="24" stroke-linecap="round"/>
+  <path d="M470 210H790" stroke="#78A99A" stroke-width="20" stroke-linecap="round"/>
+  <path d="M470 276H710" stroke="#C89B3C" stroke-width="20" stroke-linecap="round"/>
+  <text x="470" y="370" fill="#252832" font-family="Arial, sans-serif" font-size="46" font-weight="800">Creative Plan</text>
+</svg>

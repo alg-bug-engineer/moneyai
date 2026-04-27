@@ -1,0 +1,9 @@
+<svg width="900" height="506" viewBox="0 0 900 506" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="506" rx="24" fill="#252832"/>
+  <rect x="102" y="82" width="696" height="342" rx="20" fill="#11131A"/>
+  <path d="M394 196L394 310L500 253L394 196Z" fill="#EC4F4F"/>
+  <path d="M160 140H740" stroke="#333746" stroke-width="18" stroke-linecap="round"/>
+  <path d="M160 368H560" stroke="#78A99A" stroke-width="16" stroke-linecap="round"/>
+  <path d="M604 368H740" stroke="#C89B3C" stroke-width="16" stroke-linecap="round"/>
+  <text x="160" y="330" fill="white" font-family="Arial, sans-serif" font-size="42" font-weight="800">Streaming</text>
+</svg>

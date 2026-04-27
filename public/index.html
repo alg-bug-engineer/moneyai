@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>云享代充</title>
+    <meta name="description" content="数字会员与 AI 工具代充中转站，展示商品、价格、使用说明和获取方式。" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="返回首页">
+        <span class="brand-mark">云</span>
+        <span id="siteName">云享代充</span>
+      </a>
+      <nav class="top-nav" aria-label="主导航">
+        <a href="/">首页</a>
+        <a href="/#products">商品目录</a>
+        <a href="/assurance">服务保障</a>
+        <a href="/guide">下单流程</a>
+        <a href="/contact">联系客服</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero-band">
+        <div class="hero-copy">
+          <p class="eyebrow">数字会员 / AI 工具 / 影音娱乐</p>
+          <h1 id="headline">数字会员与 AI 工具代充中转站</h1>
+          <p id="subheadline">集中展示商品、价格、使用说明和获取方式。下单前可通过微信二维码联系客服确认库存、时效与售后。</p>
+          <div class="hero-actions">
+            <a class="primary-button" href="#products">查看商品目录</a>
+            <a class="ghost-button" href="/contact">联系客服</a>
+          </div>
+        </div>
+        <aside class="hero-order-card" aria-label="下单前确认">
+          <p class="panel-label">下单前确认</p>
+          <h2>先核对，再付款</h2>
+          <p>代充服务会受渠道库存、账号条件和地区规则影响。先把商品、套餐、价格和到账时效确认清楚，再进入处理流程。</p>
+          <ol class="compact-steps">
+            <li>选择商品与套餐</li>
+            <li>联系客服确认条件</li>
+            <li>完成后核对权益</li>
+          </ol>
+          <a class="secondary-button" href="/guide">查看完整流程</a>
+        </aside>
+      </section>
+
+      <section class="trust-strip" aria-label="核心服务入口">
+        <a class="trust-item" href="/assurance">
+          <span>保障</span>
+          <strong>规则先说明</strong>
+          <p>报价、退款边界、售后记录和信息提交原则集中说明。</p>
+        </a>
+        <a class="trust-item" href="/guide">
+          <span>流程</span>
+          <strong>下单有步骤</strong>
+          <p>从选择商品到完成核对，每一步都有明确动作。</p>
+        </a>
+        <a class="trust-item" href="/contact">
+          <span>客服</span>
+          <strong>咨询单独入口</strong>
+          <p>商品确认、订单跟进和售后协助都从客服页进入。</p>
+        </a>
+      </section>
+
+      <section class="section" id="products">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">商品目录</p>
+            <h2>选择需要咨询的服务</h2>
+            <p class="section-intro">先浏览服务类型和参考价格，再进入详情页核对套餐、使用方式与交付说明。</p>
+          </div>
+          <label class="search-box">
+            <span>搜索</span>
+            <input id="searchInput" type="search" placeholder="ChatGPT / AI / 影音" />
+          </label>
+        </div>
+        <div class="category-tabs" id="categoryTabs" aria-label="商品分类"></div>
+        <div class="product-grid" id="productGrid" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <div class="modal" id="productModal" hidden>
+      <div class="modal-backdrop" data-close-modal></div>
+      <article class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button class="icon-button close-button" type="button" data-close-modal aria-label="关闭">×</button>
+        <div class="detail-layout">
+          <div class="detail-media">
+            <img id="modalImage" src="/assets/product-ai.svg" alt="" />
+          </div>
+          <div class="detail-content">
+            <p class="eyebrow" id="modalCategory">AI 工具</p>
+            <h2 id="modalTitle">商品名称</h2>
+            <p id="modalDescription"></p>
+            <div class="detail-meta">
+              <span id="modalStock"></span>
+              <span id="modalDelivery"></span>
+            </div>
+            <div class="price-line">
+              <strong id="modalPrice"></strong>
+              <small id="modalOriginal"></small>
+            </div>
+            <div class="option-list" id="modalOptions"></div>
+            <div class="detail-section">
+              <h3>使用方式</h3>
+              <ul id="modalUsage"></ul>
+            </div>
+            <div class="detail-section">
+              <h3>获取方式</h3>
+              <p id="modalGetMethod"></p>
+            </div>
+            <div class="detail-contact">
+              <img id="modalQr" src="/assets/contact-qr.svg" alt="微信客服二维码" />
+              <div>
+                <strong>扫码联系客服</strong>
+                <p>发送商品名称和套餐，客服会确认当前价格、到账时效和售后规则。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <footer class="site-footer">
+      <span>© <span id="year"></span> 云享代充</span>
+      <nav class="footer-nav" aria-label="页脚导航">
+        <a href="/assurance">服务保障</a>
+        <a href="/guide">下单流程</a>
+        <a href="/contact">联系客服</a>
+      </nav>
+    </footer>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>

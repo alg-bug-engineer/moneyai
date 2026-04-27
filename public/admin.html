@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>后台管理 - 云享代充</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="admin-body">
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="brand-mark">云</span>
+        <span>后台管理</span>
+      </a>
+      <nav class="top-nav" aria-label="后台导航">
+        <a href="/">前台</a>
+        <button class="link-button" type="button" id="logoutBtn">退出</button>
+      </nav>
+    </header>
+
+    <main class="admin-shell">
+      <section class="login-panel" id="loginPanel">
+        <h1>管理员登录</h1>
+        <p>请输入部署配置中的后台账号和密码。默认账号 admin，默认密码 admin123，上线前必须修改。</p>
+        <form id="loginForm" class="admin-form">
+          <label class="admin-field">
+            <span>后台账号</span>
+            <input type="text" name="username" autocomplete="username" required />
+          </label>
+          <label class="admin-field">
+            <span>后台密码</span>
+            <input type="password" name="password" autocomplete="current-password" required />
+          </label>
+          <button class="primary-button" type="submit">登录</button>
+          <p class="form-message" id="loginMessage"></p>
+        </form>
+      </section>
+
+      <section class="admin-dashboard" id="dashboard" hidden>
+        <div class="admin-head">
+          <div>
+            <p class="eyebrow">商品与站点设置</p>
+            <h1>管理代充商品</h1>
+          </div>
+          <button class="primary-button" type="button" id="newProductBtn">新增商品</button>
+        </div>
+
+        <section class="admin-card">
+          <div class="admin-card-head">
+            <div>
+              <h2>站点信息</h2>
+              <p>用于前台首页标题、客服微信和二维码展示。</p>
+            </div>
+            <button class="secondary-button" type="button" id="saveSettingsBtn">保存设置</button>
+          </div>
+          <form class="admin-grid" id="settingsForm">
+            <label class="admin-field">
+              <span>站点名称</span>
+              <input name="siteName" required />
+            </label>
+            <label class="admin-field">
+              <span>微信号</span>
+              <input name="wechatId" />
+            </label>
+            <label class="admin-field wide">
+              <span>首页标题</span>
+              <input name="headline" />
+            </label>
+            <label class="admin-field wide">
+              <span>首页说明</span>
+              <textarea name="subheadline" rows="3"></textarea>
+            </label>
+            <label class="admin-field">
+              <span>客服二维码 URL</span>
+              <input name="contactQr" />
+            </label>
+            <label class="admin-field">
+              <span>上传二维码</span>
+              <input type="file" id="qrUpload" accept="image/png,image/jpeg,image/webp,image/svg+xml" />
+            </label>
+            <label class="admin-field wide">
+              <span>价格与库存提示</span>
+              <textarea name="notice" rows="2"></textarea>
+            </label>
+          </form>
+        </section>
+
+        <section class="admin-layout">
+          <div class="admin-card product-list-card">
+            <div class="admin-card-head">
+              <div>
+                <h2>商品列表</h2>
+                <p>点击商品可编辑，发布开关控制前台是否展示。</p>
+              </div>
+            </div>
+            <div class="admin-product-list" id="adminProductList"></div>
+          </div>
+
+          <div class="admin-card editor-card">
+            <div class="admin-card-head">
+              <div>
+                <h2 id="editorTitle">新增商品</h2>
+                <p>商品链接标识会用于详情地址，例如 `/product/chatgpt-plus`。</p>
+              </div>
+              <button class="danger-button" type="button" id="deleteProductBtn" hidden>删除</button>
+            </div>
+            <form id="productForm" class="admin-grid">
+              <input type="hidden" name="id" />
+              <label class="admin-field">
+                <span>商品名称</span>
+                <input name="name" required />
+              </label>
+              <label class="admin-field">
+                <span>链接标识</span>
+                <input name="slug" placeholder="chatgpt-plus" />
+              </label>
+              <label class="admin-field">
+                <span>分类</span>
+                <input name="category" placeholder="AI 工具" />
+              </label>
+              <label class="admin-field">
+                <span>状态标签</span>
+                <input name="stockStatus" placeholder="现货 / 咨询" />
+              </label>
+              <label class="admin-field">
+                <span>价格</span>
+                <input name="price" type="number" min="0" step="1" />
+              </label>
+              <label class="admin-field">
+                <span>原价</span>
+                <input name="originalPrice" type="number" min="0" step="1" />
+              </label>
+              <label class="admin-field">
+                <span>单位</span>
+                <input name="unit" placeholder="月" />
+              </label>
+              <label class="admin-field">
+                <span>排序</span>
+                <input name="sortOrder" type="number" step="1" />
+              </label>
+              <label class="admin-field wide">
+                <span>商品图片 URL</span>
+                <input name="image" />
+              </label>
+              <label class="admin-field">
+                <span>上传商品图</span>
+                <input type="file" id="productImageUpload" accept="image/png,image/jpeg,image/webp,image/svg+xml" />
+              </label>
+              <label class="check-field">
+                <input name="featured" type="checkbox" />
+                <span>推荐商品</span>
+              </label>
+              <label class="check-field">
+                <input name="published" type="checkbox" checked />
+                <span>前台展示</span>
+              </label>
+              <label class="admin-field wide">
+                <span>短介绍</span>
+                <textarea name="shortDescription" rows="2"></textarea>
+              </label>
+              <label class="admin-field wide">
+                <span>详细介绍</span>
+                <textarea name="description" rows="4"></textarea>
+              </label>
+              <label class="admin-field wide">
+                <span>套餐 JSON</span>
+                <textarea name="optionsText" rows="5" placeholder='[{"label":"1 个月","price":78,"note":"常规月卡"}]'></textarea>
+              </label>
+              <label class="admin-field wide">
+                <span>卖点，每行一个</span>
+                <textarea name="highlightsText" rows="3"></textarea>
+              </label>
+              <label class="admin-field wide">
+                <span>使用方式，每行一步</span>
+                <textarea name="usageText" rows="4"></textarea>
+              </label>
+              <label class="admin-field wide">
+                <span>到账时效</span>
+                <input name="delivery" />
+              </label>
+              <label class="admin-field wide">
+                <span>获取方式</span>
+                <textarea name="getMethod" rows="3"></textarea>
+              </label>
+              <div class="form-actions wide">
+                <button class="primary-button" type="submit">保存商品</button>
+                <button class="secondary-button" type="button" id="resetFormBtn">清空</button>
+              </div>
+              <p class="form-message wide" id="productMessage"></p>
+            </form>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/admin.js" defer></script>
+  </body>
+</html>

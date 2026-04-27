@@ -1,0 +1,13 @@
+{
+  "name": "daichong-market",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Chinese digital subscription recharge catalog with admin management.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "NODE_ENV=development ADMIN_USERNAME=admin ADMIN_PASSWORD=admin123 node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

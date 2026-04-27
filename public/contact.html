@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>联系客服 - 云享代充</title>
+    <meta name="description" content="云享代充客服页面：从独立商品页进入咨询，确认价格、库存、时效和账号条件，统一通过微信客服跟进。" />
+    <link rel="icon" href="/assets/hero-pattern.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="返回首页">
+        <span class="brand-mark">云</span>
+        <span data-site-name>云享代充</span>
+      </a>
+      <nav class="top-nav" aria-label="主导航">
+        <a href="/">首页</a>
+        <a href="/products">商品页</a>
+        <a href="/assurance">服务保障</a>
+        <a href="/guide">下单流程</a>
+        <a href="/contact" aria-current="page">联系客服</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero contact-page-hero">
+        <p class="eyebrow">联系客服</p>
+        <h1>下单前先确认，<br />问题集中到一个入口</h1>
+        <p>咨询商品、确认价格、提交订单和售后跟进都通过客服完成。建议先打开独立商品页，再把商品名称和目标套餐直接发给客服核对。</p>
+        <div class="page-actions">
+          <a class="primary-button" href="#wechat">查看微信客服</a>
+          <a class="ghost-button" href="/guide">先看下单流程</a>
+        </div>
+      </section>
+
+      <section class="page-section contact-layout" id="wechat">
+        <article class="contact-card primary-contact-card">
+          <div>
+            <p class="eyebrow">微信客服</p>
+            <h2 data-wechat-id>daichong-kefu</h2>
+            <p data-notice>所有商品以人工确认为准，价格和到账时效可能随渠道变化。</p>
+          </div>
+          <img data-contact-qr src="/assets/contact-qr.svg" alt="微信客服二维码" />
+        </article>
+
+        <div class="contact-side">
+          <article class="contact-card">
+            <span class="contact-token">售前</span>
+            <h2>咨询时请发送什么</h2>
+            <ul class="clean-list">
+              <li>商品名称和想要的套餐时长</li>
+              <li>账号地区、平台限制或特殊需求</li>
+              <li>期望到账时间和是否需要长期使用</li>
+            </ul>
+          </article>
+          <article class="contact-card">
+            <span class="contact-token">售后</span>
+            <h2>遇到异常如何跟进</h2>
+            <ul class="clean-list">
+              <li>保留客服确认的商品、套餐和付款记录</li>
+              <li>截图会员状态、有效期或平台报错</li>
+              <li>说明出现问题的时间和已尝试操作</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="page-section surface-section">
+        <div class="service-grid">
+          <article>
+            <span>1</span>
+            <h2>先问库存和价格</h2>
+            <p>代充渠道会随时间变化，独立商品页展示的是参考信息。客服确认后再付款，避免价格、时效和账号条件不一致。</p>
+          </article>
+          <article>
+            <span>2</span>
+            <h2>按需提交资料</h2>
+            <p>只提交完成当前服务所需的信息。与商品无关的隐私内容不需要发送，信息不满足条件时会先说明。</p>
+          </article>
+          <article>
+            <span>3</span>
+            <h2>完成后及时核对</h2>
+            <p>到账后检查会员状态、有效期和权益内容。如有异常，直接带着订单信息回到客服入口继续处理。</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>© 2026 云享代充</span>
+      <nav class="footer-nav" aria-label="页脚导航">
+        <a href="/">首页</a>
+        <a href="/products">商品页</a>
+        <a href="/assurance">服务保障</a>
+        <a href="/guide">下单流程</a>
+      </nav>
+    </footer>
+
+    <script>
+      fetch("/api/config")
+        .then((response) => (response.ok ? response.json() : null))
+        .then((config) => {
+          if (!config) return;
+          document.querySelectorAll("[data-site-name]").forEach((item) => {
+            item.textContent = config.siteName || "云享代充";
+          });
+          const wechat = document.querySelector("[data-wechat-id]");
+          const notice = document.querySelector("[data-notice]");
+          const qr = document.querySelector("[data-contact-qr]");
+          if (wechat) wechat.textContent = config.wechatId || "daichong-kefu";
+          if (notice) notice.textContent = config.notice || "";
+          if (qr && config.contactQr) qr.src = config.contactQr;
+        })
+        .catch(() => {});
+    </script>
+  </body>
+</html>

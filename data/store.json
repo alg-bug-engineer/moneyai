@@ -1,0 +1,146 @@
+{
+  "settings": {
+    "siteName": "云享代充",
+    "headline": "AI 工具、数字会员与流媒体订阅代充咨询站",
+    "subheadline": "提供 ChatGPT、Midjourney 等热门 AI 工具及各大流媒体会员代充咨询服务。规则透明，人工确认，保障到账。",
+    "wechatId": "daichong-kefu",
+    "contactQr": "/assets/contact-qr.svg",
+    "notice": "扫码后发送商品名称、目标套餐和账号地区。客服会先确认库存、价格、预计时效和售后规则，再引导下单。"
+  },
+  "products": [
+    {
+      "id": "6e551f8b-31e2-4c63-9572-c3323a89ff0f",
+      "slug": "chatgpt-plus",
+      "name": "ChatGPT Plus",
+      "category": "AI 工具",
+      "image": "/assets/product-ai.svg",
+      "shortDescription": "适合个人写作、编程、学习和日常效率场景的 ChatGPT Plus 代充咨询。",
+      "description": "提供稳定、高效的 ChatGPT Plus 代充服务，支持多种订阅方案。咨询前请准备好您的账号信息，我们将为您核对适用的地区限制与到账时效。",
+      "price": 78,
+      "originalPrice": 98,
+      "unit": "月",
+      "stockStatus": "现货",
+      "sortOrder": 10,
+      "featured": true,
+      "published": true,
+      "options": [
+        {
+          "label": "1 个月",
+          "price": 78,
+          "note": "常规月卡，适合先体验"
+        },
+        {
+          "label": "3 个月",
+          "price": 225,
+          "note": "适合持续高频使用"
+        },
+        {
+          "label": "6 个月",
+          "price": 438,
+          "note": "适合长期稳定续费"
+        }
+      ],
+      "highlights": [
+        "中文客服确认",
+        "到账提醒",
+        "使用说明",
+        "售后协助"
+      ],
+      "usage": [
+        "先联系客服确认账号状态、地区条件和当前可用渠道。",
+        "按客服指引提交完成服务所需的信息，不发送无关隐私内容。",
+        "完成后重新登录并核对会员状态、有效期和入口权限。"
+      ],
+      "delivery": "人工处理，通常 10-60 分钟内完成，高峰期以客服二次确认为准。",
+      "getMethod": "扫码联系客服，发送“ChatGPT Plus + 套餐时长”即可确认是否可下单。",
+      "createdAt": "2026-04-15T08:16:00.441Z",
+      "updatedAt": "2026-04-15T08:16:00.441Z"
+    },
+    {
+      "id": "3cefec34-b96a-4638-b19a-0aa0c170161d",
+      "slug": "midjourney",
+      "name": "Midjourney",
+      "category": "AI 绘画",
+      "image": "/assets/product-creative.svg",
+      "shortDescription": "适合视觉草图、海报创意和灵感探索的 Midjourney 订阅咨询与代充。",
+      "description": "Midjourney 各版本订阅咨询。无论您是专业设计师还是创意爱好者，我们都能为您提供合适的开通方案与技术支持。",
+      "price": 118,
+      "originalPrice": 138,
+      "unit": "月",
+      "stockStatus": "咨询",
+      "sortOrder": 20,
+      "featured": true,
+      "published": true,
+      "options": [
+        {
+          "label": "基础版",
+          "price": 118,
+          "note": "适合轻量探索与偶发使用"
+        },
+        {
+          "label": "标准版",
+          "price": 198,
+          "note": "适合高频生成和团队协作"
+        }
+      ],
+      "highlights": [
+        "套餐咨询",
+        "渠道报价",
+        "使用提醒",
+        "人工售后"
+      ],
+      "usage": [
+        "先说明目标套餐、使用强度和是否需要长期续费。",
+        "客服确认渠道价格 and 账号条件后，再进入处理流程。",
+        "到账后检查订阅状态、可用额度和常用工作流入口。"
+      ],
+      "delivery": "通常按客服确认的排单顺序处理，实际时效以沟通记录为准。",
+      "getMethod": "添加客服后发送“Midjourney + 目标套餐 + 使用频率”。",
+      "createdAt": "2026-04-15T08:16:00.441Z",
+      "updatedAt": "2026-04-15T08:16:00.441Z"
+    },
+    {
+      "id": "29aeef3b-6f59-4ee7-a9fd-e37acffcab61",
+      "slug": "streaming-member",
+      "name": "流媒体会员",
+      "category": "影音娱乐",
+      "image": "/assets/product-media.svg",
+      "shortDescription": "适合家庭观影与个人娱乐的流媒体会员代充咨询，支持多平台方案核对。",
+      "description": "支持 Netflix、Disney+、YouTube Premium 等多平台会员开通咨询。我们将根据您的地区和设备为您推荐最稳定的方案。",
+      "price": 35,
+      "originalPrice": 49,
+      "unit": "月",
+      "stockStatus": "多渠道",
+      "sortOrder": 30,
+      "featured": false,
+      "published": true,
+      "options": [
+        {
+          "label": "月卡",
+          "price": 35,
+          "note": "适合短期使用和灵活选择"
+        },
+        {
+          "label": "季卡",
+          "price": 96,
+          "note": "适合常用账号续费"
+        }
+      ],
+      "highlights": [
+        "平台多选",
+        "参考价格透明",
+        "售前确认",
+        "到期提醒"
+      ],
+      "usage": [
+        "先说明需要的平台、所在地区和期望时长。",
+        "确认是独享、共享、礼品卡还是代开通形式。",
+        "到账后核对权益、生效时间和登录方式。"
+      ],
+      "delivery": "通常当天处理，具体平台和地区不同会有差异。",
+      "getMethod": "联系客服发送平台名称、地区和希望开通的时长。",
+      "createdAt": "2026-04-15T08:16:00.441Z",
+      "updatedAt": "2026-04-15T08:16:00.441Z"
+    }
+  ]
+}
