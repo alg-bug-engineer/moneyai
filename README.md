@@ -1,14 +1,14 @@
 # 云享代充网站
 
-一个无构建依赖的数字会员与 AI 工具代充中转站。支持商品展示、后台管理、图片上传以及**支付宝扫码支付**集成。
+一个无构建依赖的数字会员与 AI 工具代充中转站。支持响应式商品展示、后台管理系统、图片上传以及**支付宝扫码支付**深度集成。
 
 ## 核心特性
 
-- **商品展示**：响应式布局，支持分类、搜索和精选推荐。
-- **详情页**：独立的商品详情页，包含套餐方案、常见问题和获取方式。
-- **在线支付**：集成支付宝“电脑网站支付”，支持用户扫码支付并自动跳转至客服页面。
-- **后台管理**：便捷管理站点配置、商品信息及图片上传。
-- **SEO/GEO 友好**：结构化文案，利于搜索引擎及大模型（LLMs）理解。
+- **极致流畅的商品浏览**：支持分类切换、实时搜索、精选推荐，采用全响应式设计。
+- **结构化详情展示**：独立的商品详情页，涵盖多档位套餐方案、常见问题解答（FAQ）及详尽的获取指引。
+- **安全便捷的在线支付**：集成支付宝“电脑网站支付”标准接口。用户点击支付后，系统自动生成支付订单并引导完成扫码，支付成功后平滑跳转至客服页面。
+- **强大的管理后台**：无需数据库，基于 JSON 文件的轻量级存储。可实时管理站点配置（名称、微信号、客服码）及商品全生命周期。
+- **GEO/SEO 优化**：文案经过专业润色，去除了 AI 痕迹，逻辑严密，更有利于搜索引擎及 AI 大模型（LLMs）的语义理解。
 
 ## 快速开始
 
@@ -20,7 +20,7 @@ npm install
 
 ### 2. 配置环境变量
 
-复制 `.env.example` 为 `.env` 并填写相关信息：
+复制 `.env.example` 为 `.env` 并填写您的配置信息：
 
 ```bash
 cp .env.example .env
@@ -28,12 +28,12 @@ cp .env.example .env
 
 `.env` 关键配置项说明：
 
-- `ADMIN_USERNAME` / `ADMIN_PASSWORD`: 后台登录凭证。
-- `TOKEN_SECRET`: 用于 JWT 签名的随机长字符串。
-- `ALIPAY_APP_ID`: 支付宝应用 ID。
-- `ALIPAY_PRIVATE_KEY`: 应用私钥。
-- `ALIPAY_PUBLIC_KEY`: 支付宝公钥（注意是在支付宝开放平台获取的支付宝公钥，而非应用公钥）。
-- `ALIPAY_GATEWAY`: 支付宝网关（正式环境：`https://openapi.alipay.com/gateway.do`；沙箱环境：`https://openapi-sandbox.dl.alipaydev.com/gateway.do`）。
+- `ADMIN_USERNAME` / `ADMIN_PASSWORD`: 后台登录账号与密码。
+- `TOKEN_SECRET`: 用于 JWT 签名的随机长字符串，建议使用复杂的字符组合。
+- `ALIPAY_APP_ID`: 您的支付宝应用 APPID。
+- `ALIPAY_PRIVATE_KEY`: 您的应用私钥（由开发者生成）。
+- `ALIPAY_PUBLIC_KEY`: 支付宝公钥（在支付宝开放平台配置完加签后获取，注意不是应用公钥）。
+- `ALIPAY_GATEWAY`: 支付宝接口网关（生产：`https://openapi.alipay.com/gateway.do`；沙箱：`https://openapi-sandbox.dl.alipaydev.com/gateway.do`）。
 
 ### 3. 本地运行
 
@@ -41,45 +41,59 @@ cp .env.example .env
 node server.js
 ```
 
-访问：
-- 前台：http://localhost:3000
-- 后台：http://localhost:3000/admin
+访问地址：
+- **前台首页**：[http://localhost:3000](http://localhost:3000)
+- **管理后台**：[http://localhost:3000/admin](http://localhost:3000/admin)
 
-## 支付流程
+## 支付交互流程
 
-1. **用户选购**：用户在商品卡片或详情页点击“支付”按钮。
-2. **跳转支付**：系统通过 `/api/pay` 接口生成支付宝支付 URL 并重定向。
-3. **完成支付**：用户完成扫码支付。
-4. **自动跳转**：支付成功后，支付宝将自动重定向用户至站点“联系客服”页面 (`/contact`)，引导用户提交充值信息。
+1. **用户选购**：用户浏览商品详情，点击醒目的“立即扫码支付”按钮。
+2. **订单生成**：后端 `/api/pay` 接口调用支付宝 SDK，生成加密的支付表单。
+3. **扫码支付**：用户被自动引导至支付宝官方收银台完成付款。
+4. **服务承接**：支付完成后，用户将自动跳转至“联系客服”页面 (`/contact`)。系统会提示用户将支付记录发送给客服，由人工完成最终充值确认。
 
 ## 后台管理能力
 
-- 编辑站点名称、首页标题、微信号、客服二维码。
-- 商品的全生命周期管理（新增、编辑、删除、上下架、推荐）。
-- 配置商品套餐 JSON、使用方式、到账时效。
-- 集成图片上传功能。
+- **站点全局设置**：编辑站点名称、首页 Slogan、官方微信号、客服微信二维码图片。
+- **商品精细化管理**：
+    - 支持新增、编辑、删除、上下架、置顶推荐等操作。
+    - 自定义套餐 JSON（支持设置标签、价格与备注）。
+    - 独立配置各商品的卖点、使用指南、到账时效及获取方式。
+- **资源管理**：集成文件上传功能，支持商品封面及客服码的实时上传与更新。
 
 ## 部署建议
 
-### PM2 托管
+### 使用 PM2 进行进程托管
 
 ```bash
 sudo npm install -g pm2
-pm2 start server.js --name daichong
+pm2 start server.js --name daichong-market
+pm2 save
+pm2 startup
 ```
 
-### Nginx 反向代理
+### Nginx 反向代理配置参考
 
-建议使用 Nginx 作为反向代理并配置 HTTPS。请确保 `client_max_body_size` 足够大以支持图片上传。
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+## 安全与备份
+
+- **数据备份**：所有站点配置与商品数据均存储在 `data/store.json`，建议定期通过脚本或手动备份该文件。
+- **图片备份**：上传的图片资源均位于 `public/uploads/` 目录。
+- **安全周知**：请务必在线上环境修改默认的 `ADMIN_PASSWORD` 与 `TOKEN_SECRET`。
 
 ## 开发者说明
 
-- **无构建步骤**：直接修改 `public/` 下的 HTML/JS 和根目录的 `server.js` 即可。
-- **数据存储**：所有动态数据保存在 `data/store.json`，请注意定期备份。
-- **图片存储**：上传的图片保存在 `public/uploads/`。
-
-## 安全建议
-
-- 严禁将 `.env` 文件提交至版本控制系统。
-- 上线前请务必修改默认的后台管理密码。
-- 建议配置防火墙，仅开放必要的 80/443 端口。
+本站采用原生 Node.js (http module) 构建，核心逻辑集中在 `server.js`，静态资源位于 `public/`。代码结构清晰，无繁琐的构建链路，适合进行二次定制与快速部署。

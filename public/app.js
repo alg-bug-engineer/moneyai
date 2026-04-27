@@ -65,9 +65,11 @@ function productCard(product) {
             <strong>${formatPrice(product.price)}</strong>
             <span>/${escapeHtml(text(product.unit, "月"))} 起</span>
           </div>
-          <div style="display: flex; gap: 0.5rem;">
-            <a class="small-button" href="/api/pay?slug=${encodeURIComponent(product.slug)}" style="background: #1677ff; color: white; border-color: #1677ff;">支付</a>
-            <a class="small-button ghost-button" href="${href}">详情</a>
+          <div style="display: flex; gap: 0.5rem; width: 100%;">
+            <a class="small-button" href="/api/pay?slug=${encodeURIComponent(product.slug)}" 
+               onclick="this.innerText='处理中...';"
+               style="background: #1677ff; color: white; border-color: #1677ff; flex: 1; text-align: center; font-weight: 600;">立即支付</a>
+            <a class="small-button ghost-button" href="${href}" style="flex: 1; text-align: center;">查看详情</a>
           </div>
         </div>
       </div>
@@ -136,6 +138,23 @@ async function init() {
     renderTabs();
     renderProducts();
     bindEvents();
+
+    // Handle modal pay button update
+    const modal = document.querySelector("#productModal");
+    const modalPayBtn = document.querySelector("#modalPayBtn");
+    if (modalPayBtn) {
+      document.addEventListener("click", (e) => {
+        const card = e.target.closest(".product-card");
+        if (card) {
+          const href = card.querySelector("a.product-main")?.getAttribute("href");
+          if (href) {
+            const slug = decodeURIComponent(href.split("/").pop());
+            modalPayBtn.href = `/api/pay?slug=${slug}`;
+            modalPayBtn.innerText = "立即扫码支付";
+          }
+        }
+      });
+    }
   } catch (error) {
     els.grid.innerHTML = `<div class="empty-state"><strong>商品加载失败</strong><p>${escapeHtml(error.message)}</p></div>`;
   }

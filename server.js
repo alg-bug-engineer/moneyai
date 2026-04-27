@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const { URL } = require("url");
+const { AlipaySdk } = require("alipay-sdk");
 
 const ROOT = __dirname;
 const PUBLIC_DIR = path.join(ROOT, "public");
@@ -524,9 +525,11 @@ function renderProductCard(product) {
             <strong>${formatPrice(product.price)}</strong>
             <span>/${escapeHtml(text(product.unit, "月"))} 起</span>
           </div>
-          <div style="display: flex; gap: 0.5rem;">
-            <a class="small-button" href="/api/pay?slug=${encodeURIComponent(product.slug)}" style="background: #1677ff; color: white; border-color: #1677ff;">支付</a>
-            <a class="small-button ghost-button" href="${href}">详情</a>
+          <div style="display: flex; gap: 0.5rem; width: 100%;">
+            <a class="small-button" href="/api/pay?slug=${encodeURIComponent(product.slug)}" 
+               onclick="this.innerText='处理中...';"
+               style="background: #1677ff; color: white; border-color: #1677ff; flex: 1; text-align: center; font-weight: 600;">立即支付</a>
+            <a class="small-button ghost-button" href="${href}" style="flex: 1; text-align: center;">查看详情</a>
           </div>
         </div>
       </div>
@@ -1029,10 +1032,16 @@ function renderProductPage(req, store, product) {
             <div class="detail-pill-list">
               ${(product.highlights || []).slice(0, 5).map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
             </div>
-            <div class="page-actions">
-              <a class="primary-button" href="/api/pay?slug=${encodeURIComponent(product.slug)}">点击立即支付</a>
-              <a class="ghost-button" href="/contact">联系客服确认</a>
-              <a class="ghost-button" href="/products">返回商品页</a>
+            <div class="page-actions" style="flex-direction: column; gap: 1.25rem; align-items: stretch; margin-top: 2rem;">
+              <a class="primary-button checkout-button" href="/api/pay?slug=${encodeURIComponent(product.slug)}" 
+                 onclick="this.classList.add('loading'); this.innerHTML='<span class=\'spinner\'></span> 正在生成订单...';"
+                 style="background: linear-gradient(135deg, #1677ff 0%, #0050b3 100%); color: white; border: none; padding: 1.25rem; font-size: 1.4rem; font-weight: bold; text-align: center; border-radius: 16px; box-shadow: 0 8px 24px rgba(22, 119, 255, 0.4); transition: transform 0.2s, box-shadow 0.2s; display: flex; align-items: center; justify-content: center;">
+                立即扫码支付 (￥${product.price.toFixed(2)})
+              </a>
+              <div style="display: flex; gap: 0.75rem;">
+                <a class="ghost-button" href="/contact" style="flex: 1; text-align: center; padding: 0.8rem; border-radius: 12px;">咨询客服</a>
+                <a class="ghost-button" href="/products" style="flex: 1; text-align: center; padding: 0.8rem; border-radius: 12px;">返回目录</a>
+              </div>
             </div>
           </div>
           <aside class="product-summary-card">
@@ -1321,8 +1330,15 @@ async function handleApi(req, res, pathname) {
           },
           returnUrl: absoluteUrl(req, "/contact")
         });
-        res.writeHead(302, { Location: result });
-        res.end();
+
+        // result can be a URL or an HTML form depending on the SDK configuration
+        if (result.startsWith("http")) {
+          // Safe redirect using meta refresh to avoid header character issues
+          sendHtml(res, 200, `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=${result}"></head><body><p>正在跳转至支付宝支付...</p><script>window.location.href="${result}";</script></body></html>`);
+        } else {
+          // If it's an HTML form, send it directly
+          sendHtml(res, 200, result);
+        }
         return;
       } catch (error) {
         console.error("Alipay error:", error);
