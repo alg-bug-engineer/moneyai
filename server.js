@@ -11,6 +11,13 @@ const STORE_FILE = path.join(DATA_DIR, "store.json");
 const UPLOAD_DIR = path.join(PUBLIC_DIR, "uploads");
 loadEnvFile(path.join(ROOT, ".env"));
 
+const alipaySdk = new AlipaySdk({
+  appId: process.env.ALIPAY_APP_ID,
+  privateKey: process.env.ALIPAY_PRIVATE_KEY,
+  alipayPublicKey: process.env.ALIPAY_PUBLIC_KEY,
+  gateway: process.env.ALIPAY_GATEWAY || "https://openapi.alipay.com/gateway.do"
+});
+
 const PORT = Number(process.env.PORT || 3000);
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "admin";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
@@ -517,7 +524,10 @@ function renderProductCard(product) {
             <strong>${formatPrice(product.price)}</strong>
             <span>/${escapeHtml(text(product.unit, "月"))} 起</span>
           </div>
-          <a class="small-button" href="${href}">查看详情</a>
+          <div style="display: flex; gap: 0.5rem;">
+            <a class="small-button" href="/api/pay?slug=${encodeURIComponent(product.slug)}" style="background: #1677ff; color: white; border-color: #1677ff;">支付</a>
+            <a class="small-button ghost-button" href="${href}">详情</a>
+          </div>
         </div>
       </div>
     </article>
@@ -1020,7 +1030,8 @@ function renderProductPage(req, store, product) {
               ${(product.highlights || []).slice(0, 5).map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
             </div>
             <div class="page-actions">
-              <a class="primary-button" href="/contact">联系客服确认</a>
+              <a class="primary-button" href="/api/pay?slug=${encodeURIComponent(product.slug)}">点击立即支付</a>
+              <a class="ghost-button" href="/contact">联系客服确认</a>
               <a class="ghost-button" href="/products">返回商品页</a>
             </div>
           </div>
@@ -1291,6 +1302,32 @@ async function handleApi(req, res, pathname) {
       const store = readStore();
       sendJson(res, 200, store.settings);
       return;
+    }
+
+    if (req.method === "GET" && pathname === "/api/pay") {
+      const url = new URL(req.url, `http://${req.headers.host}`);
+      const slug = url.searchParams.get("slug");
+      const store = readStore();
+      const product = store.products.find((item) => item.slug === slug && item.published);
+      if (!product) return sendError(res, 404, "商品不存在");
+
+      try {
+        const result = await alipaySdk.pageExec("alipay.trade.page.pay", {
+          bizContent: {
+            out_trade_no: `order_${Date.now()}_${product.slug}`,
+            product_code: "FAST_INSTANT_TRADE_PAY",
+            total_amount: product.price.toFixed(2),
+            subject: product.name
+          },
+          returnUrl: absoluteUrl(req, "/contact")
+        });
+        res.writeHead(302, { Location: result });
+        res.end();
+        return;
+      } catch (error) {
+        console.error("Alipay error:", error);
+        return sendError(res, 500, "支付发起失败");
+      }
     }
 
     if (req.method === "GET" && pathname === "/api/products") {

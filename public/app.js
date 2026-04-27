@@ -65,7 +65,10 @@ function productCard(product) {
             <strong>${formatPrice(product.price)}</strong>
             <span>/${escapeHtml(text(product.unit, "月"))} 起</span>
           </div>
-          <a class="small-button" href="${href}">查看详情</a>
+          <div style="display: flex; gap: 0.5rem;">
+            <a class="small-button" href="/api/pay?slug=${encodeURIComponent(product.slug)}" style="background: #1677ff; color: white; border-color: #1677ff;">支付</a>
+            <a class="small-button ghost-button" href="${href}">详情</a>
+          </div>
         </div>
       </div>
     </article>
